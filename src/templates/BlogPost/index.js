@@ -3,21 +3,21 @@ import { graphql } from "gatsby";
 import { Layout, RichText, SEO } from "components";
 
 const BlogPost = (props) => {
-    console.log(props);
+    console.log("props",props);
     return (
         <Layout>
             <SEO
-                title={props.data.contentfulBlogPost.title}
-                description={props.data.contentfulBlogPost.description}
+                title={props.data.contentfulComponentBlogPost.title}
+                description={props.data.contentfulComponentBlogPost.description}
             />
-            <RichText raw={props.data.contentfulBlogPost.pageContent.raw} />
+            <RichText raw={props.data.contentfulComponentBlogPost.pageContent.raw} />
         </Layout>
     );
 };
 
 export const query = graphql`
     query BlogPostQuery($postId: String) {
-        contentfulBlogPost(contentful_id: { eq: $postId }) {
+        contentfulComponentBlogPost(contentful_id: { eq: $postId }) {
             publishedDate(formatString: "DD MMM YYYY")
             pageContent {
                 raw

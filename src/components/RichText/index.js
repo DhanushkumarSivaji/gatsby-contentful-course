@@ -27,7 +27,7 @@ export const RichText = ({ raw, references = [] }) => {
             [BLOCKS.EMBEDDED_ENTRY]: (node) => {
                 const data = referencesMap[node.data.target.sys.id];
                 switch (data.__typename) {
-                    case "ContentfulHero":
+                    case "ContentfulComponentHeroBanner":
                         return (
                             <Hero
                                 heading={data.heading}
@@ -37,7 +37,7 @@ export const RichText = ({ raw, references = [] }) => {
                                 }
                             />
                         );
-                    case "ContentfulPriceGroup":
+                    case "ContentfulComponentPriceGroup":
                         return <PriceGroup priceOptions={data.priceOptions} />;
                     default:
                         return null;

@@ -4,24 +4,24 @@ import { MenuWrapper, MenuItem, SubMenuItemWrapper } from "./style";
 
 const Menu = () => {
     const result = useStaticQuery(graphql`
-        fragment menuItemData on ContentfulMenuItem {
+        fragment menuItemData on ContentfulComponentMenuItem {
             id
             label
             page {
-                ... on ContentfulPage {
+                ... on ContentfulComponentPage {
                     slug
                 }
-                ... on ContentfulBlog {
+                ... on ContentfulComponentBlog {
                     slug
                 }
             }
         }
 
         query MenuQuery {
-            contentfulMenu {
+            contentfulComponentMenu {
                 menuItems {
                     ...menuItemData
-                    subMenuItems {
+                    subMenuItem {
                         ...menuItemData
                     }
                 }
@@ -30,9 +30,9 @@ const Menu = () => {
     `);
     return (
         <MenuWrapper>
-            {result.contentfulMenu.menuItems.map((menuItem) => (
+            {result.contentfulComponentMenu.menuItems.map((menuItem) => (
                 <MenuItem key={menuItem.id}>
-                    {!menuItem.subMenuItems ? (
+                    {!menuItem.subMenuItem ? (
                         <Link to={`/${menuItem.page.slug}`}>
                             {menuItem.label}
                         </Link>
@@ -40,7 +40,7 @@ const Menu = () => {
                         <SubMenuItemWrapper>
                             <div>{menuItem.label}</div>
                             <div>
-                                {menuItem.subMenuItems?.map((subMenuItem) => (
+                                {menuItem.subMenuItem?.map((subMenuItem) => (
                                     <div key={subMenuItem.id}>
                                         <Link to={`/${subMenuItem.page.slug}`}>
                                             {subMenuItem.label}

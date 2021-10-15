@@ -11,14 +11,14 @@ exports.onCreateWebpackConfig = ({ actions }) => {
 exports.createPages = async ({ actions, graphql }) => {
     const { createPage } = actions;
     const {
-        data: { contentfulBlog, allContentfulBlogPost },
+        data: { contentfulComponentBlog, allContentfulComponentBlogPost },
     } = await graphql(`
         {
-            contentfulBlog {
+            contentfulComponentBlog {
                 postsPerPage
                 slug
             }
-            allContentfulBlogPost(
+            allContentfulComponentBlogPost(
                 sort: { fields: publishedDate, order: DESC }
             ) {
                 edges {
@@ -37,9 +37,9 @@ exports.createPages = async ({ actions, graphql }) => {
         }
     `);
 
-    allContentfulBlogPost.edges.forEach((blogPost) => {
+    allContentfulComponentBlogPost.edges.forEach((blogPost) => {
         createPage({
-            path: `${contentfulBlog.slug}/${blogPost.node.slug}`,
+            path: `${contentfulComponentBlog.slug}/${blogPost.node.slug}`,
             context: {
                 postId: blogPost.node.contentful_id,
             },
@@ -48,25 +48,25 @@ exports.createPages = async ({ actions, graphql }) => {
     });
 
     const numPages = Math.ceil(
-        allContentfulBlogPost.edges.length / contentfulBlog.postsPerPage
+        allContentfulComponentBlogPost.edges.length / contentfulComponentBlog.postsPerPage
     );
 
     for (let i = 0; i < numPages; i++) {
         createPage({
-            path: `${contentfulBlog.slug}${i === 0 ? "" : `/${i + 1}`}`,
+            path: `${contentfulComponentBlog.slug}${i === 0 ? "" : `/${i + 1}`}`,
             component: path.resolve(
                 "./src/templates/PaginatedBlogPage/index.js"
             ),
             context: {
-                blogSlug: contentfulBlog.slug,
+                blogSlug: contentfulComponentBlog.slug,
                 totalPages: numPages,
                 currentPage: i + 1,
-                posts: allContentfulBlogPost.edges
+                posts: allContentfulComponentBlogPost.edges
                     .map((blogPost) => blogPost.node)
                     .slice(
-                        i * contentfulBlog.postsPerPage,
-                        i * contentfulBlog.postsPerPage +
-                            contentfulBlog.postsPerPage
+                        i * contentfulComponentBlog.postsPerPage,
+                        i * contentfulComponentBlog.postsPerPage +
+                            contentfulComponentBlog.postsPerPage
                     ),
             },
         });
