@@ -31,11 +31,14 @@ export const query = graphql`
       pageContent {
         raw
         references {
+          ... on Node {
           ... on ContentfulAsset {
             contentful_id
             title
             gatsbyImageData(layout: FULL_WIDTH, placeholder: BLURRED)
           }
+        }
+        ... on Node {
           ... on ContentfulComponentHeroBanner {
             __typename
             contentful_id
@@ -45,6 +48,17 @@ export const query = graphql`
               gatsbyImageData(layout: FULL_WIDTH, placeholder: BLURRED)
             }
           }
+        }
+        ... on Node {
+          ... on ContentfulComponentTinyMceAdvance {
+            contentful_id
+            __typename
+            childContentfulComponentTinyMceAdvanceBodyTextNode {
+              body
+            }
+          }
+        }
+        ... on Node {
           ... on ContentfulComponentPriceGroup {
             __typename
             contentful_id
@@ -58,6 +72,7 @@ export const query = graphql`
               mostPopular
             }
           }
+        }
         }
       }
     }

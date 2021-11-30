@@ -3,6 +3,7 @@ import { documentToReactComponents } from "@contentful/rich-text-react-renderer"
 import { BLOCKS } from "@contentful/rich-text-types";
 import { Hero, PriceGroup } from "components";
 import { GatsbyImage } from "gatsby-plugin-image";
+import HtmlReactParser from "../HtmlReactParser";
 import { Wrapper, ImageWrapper } from "./style";
 
 export const RichText = ({ raw, references = [] }) => {
@@ -25,8 +26,8 @@ export const RichText = ({ raw, references = [] }) => {
                 );
             },
             [BLOCKS.EMBEDDED_ENTRY]: (node) => {
-                const data = referencesMap[node.data.target.sys.id];
-                switch (data.__typename) {
+                const data = referencesMap[node?.data?.target?.sys?.id];
+                switch (data?.__typename) {
                     case "ContentfulComponentHeroBanner":
                         return (
                             <Hero
@@ -39,6 +40,8 @@ export const RichText = ({ raw, references = [] }) => {
                         );
                     case "ContentfulComponentPriceGroup":
                         return <PriceGroup priceOptions={data.priceOptions} />;
+                    case "ContentfulComponentTinyMceAdvance":
+                        return <HtmlReactParser htmlContent={data.childContentfulComponentTinyMceAdvanceBodyTextNode.body}/>
                     default:
                         return null;
                 }
